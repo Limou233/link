@@ -1,134 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>Windows11LTSC</title>
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      overflow: hidden;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .top-text, .center-text {
-      position: relative;
-      padding: 30px 40px;
-      background-color: #1e1e1e;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      font-size: 32px;
-    }
-
-    .center-text:hover::after, .top-text:hover::after {
-      content: "复制";
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #ffffff;
-      color: #121212;
-      padding: 8px 16px;
-      border-radius: 4px;
-      white-space: nowrap;
-      font-size: 16px;
-      opacity: 1;
-      animation: popUp 0.3s ease-out forwards;
-    }
-
-    @keyframes popUp {
-      0% {
-        transform: translateX(-50%) scale(0.7);
-        opacity: 0;
-      }
-      60% {
-        transform: translateX(-50%) scale(1.1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateX(-50%) scale(1);
-      }
-    }
-
-    .copy-success {
-      position: fixed;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #4caf50;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      opacity: 0;
-      z-index: 9999;
-      animation: slideInFade 0.6s ease-out forwards;
-      font-size: 18px;
-    }
-
-    @keyframes slideInFade {
-      0% {
-        top: -60px;
-        opacity: 0;
-      }
-      40% {
-        top: 60px;
-        opacity: 1;
-      }
-      100% {
-        top: 40px;
-        opacity: 1;
-      }
-    }
-  </style>
+  <title>居中双文本示例</title>
+  <link rel="stylesheet" href="/static/css/linkiso.css">
+  <link rel="javascript" href="/static/css/shareiso.js"></link>
 </head>
 <body>
 
 <div class="container">
-  <div class="top-text" id="topText">这是上方的文本</div>
-  <div class="center-text" id="textToCopy">这是一个可以复制的文本</div>
+  <div class="top-text">这是上方的文本</div>
+  <div class="center-text" id="textToCopy">magnet:?xt=urn:btih:b84e74c1dbcc88a02c5b24a6f84383f353a2e1dd&dn=zh-cn_windows_11_enterprise_ltsc_2024_x64_dvd_cff9cd2d.iso&xl=5287520256</div>
 </div>
 
-<script>
-  function setupCopy(element) {
-    element.addEventListener('click', () => {
-      const text = element.innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        // 创建提示框元素
-        const successEl = document.createElement('div');
-        successEl.className = 'copy-success';
-        successEl.textContent = '复制成功';
 
-        document.body.appendChild(successEl);
-
-        // 触发动画后移除
-        setTimeout(() => {
-          document.body.removeChild(successEl);
-        }, 2000); // 显示2秒后自动消失
-      }).catch(err => {
-        console.error('复制失败: ', err);
-      });
-    });
-  }
-
-  setupCopy(document.getElementById('textToCopy'));
-  setupCopy(document.getElementById('topText'));
-</script>
 
 </body>
 </html>
