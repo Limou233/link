@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>李某人的小破站</title>
     <link rel="stylesheet" href="/static/css/all.css">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="nav-container">
@@ -35,14 +37,19 @@
                 <div class="article-content">
                     <h2 class="article-title">这是什么？</h2>
                     <p class="article-excerpt">
-                        这是李某人的小破站，只是用Qwen写的。可以说是毫无技术含量，只是原生网页三件套罢了...</p>
-                    <p class="article-excerpt">
+
+                        这是李某人的小破站，只是用Qwen写的。可以说是毫无技术含量，只是原生网页三件套罢了...
+                        <br>
                         部署用的是CloudflarePages，没有CDN，每月只有100w请求。不对我在担心什么，怎么可能有那么多请求...
+                        <br>
+                        感觉可以当一个赛博日记本
+
                     </p>
                     <div class="article-meta">
                         <span class="article-date">📅 2025-8-14(我也不知道有什么用)</span>
                     </div>
                 </div>
+
             </div>
             <!--文章E-->
             <!--文章S-->
@@ -52,7 +59,8 @@
                 <div class="article-content">
                     <h2 class="article-title">ubuntu-24.04-live-server-amd64.iso</h2>
                     <p class="article-excerpt">
-                        <a class="article-excerpt" href="/linkiso/ubuntu-24.04-live-server-amd64.iso/index.html">带我去!</a>
+                        <a class="article-excerpt"
+                            href="/linkiso/ubuntu-24.04-live-server-amd64.iso/index.html">带我去!</a>
                     </p>
                     <div class="article-meta">
                         <span class="article-date">📅 2025-8-14</span>
@@ -60,12 +68,13 @@
                 </div>
             </div>
             <!--文章E-->
-            </div>
+
         </div>
+    </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.querySelector('.theme-icon');
             const navItems = document.querySelectorAll('.nav-item');
@@ -74,7 +83,7 @@
             // 检查用户 preference
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             const savedTheme = localStorage.getItem('theme');
-            
+
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
             } else if (savedTheme === 'dark') {
@@ -91,19 +100,19 @@
             updateThemeIcon();
 
             // 主题切换功能
-            themeToggle.addEventListener('click', function() {
+            themeToggle.addEventListener('click', function () {
                 this.style.transform = 'rotate(180deg) scale(0.8)';
-                
+
                 setTimeout(() => {
                     document.body.classList.toggle('light-mode');
-                    
+
                     // 保存主题设置
                     if (document.body.classList.contains('light-mode')) {
                         localStorage.setItem('theme', 'light');
                     } else {
                         localStorage.setItem('theme', 'dark');
                     }
-                    
+
                     updateThemeIcon();
                     this.style.transform = 'rotate(0deg) scale(1)';
                 }, 150);
@@ -119,7 +128,7 @@
 
             // 为导航项添加点击动画
             navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
+                item.addEventListener('click', function (e) {
                     if (item.querySelector('a')) {
                         e.preventDefault();
                         this.style.transform = 'translateY(1px)';
@@ -152,4 +161,5 @@
         });
     </script>
 </body>
+
 </html>
