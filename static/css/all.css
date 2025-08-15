@@ -136,6 +136,7 @@ body {
     font-weight: 700;
     color: var(--text-color);
     transition: var(--transition);
+    text-decoration: none;
 }
 
 .nav-title:hover {
