@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <title>关于-李某人的小破站</title>
+    <link rel="stylesheet" href="/static/css/all.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-item">
+                <div class="logo">
+                    <img src="/img/logo.png" alt="Logo" class="logo-img">
+                </div>
+                <a href="/index.html" class="nav-title">Link</a>
+            </div>
+            <div class="nav-item">
+                <a href="/about.html" class="nav-link">关于</a>
+            </div>
+            <div class="theme-toggle" id="themeToggle">
+                <span class="theme-icon">🌙</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="main">
+            <!--文章S-->
+            <div class="article-card">
+                <!-- <img src="path" alt="" class="article-cover"> -->
+                <div class="article-overlay"></div>
+                <div class="article-content">
+                    <h2 class="article-title">wow看看wzm的视频吧</h2>
+                    <p class="article-excerpt">
+                        <video src="./img/video1.mp4"></video>
+                        <br>
+                        这么美味的视频居然是免费的
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">📅 2025-08-20</span>
+                    </div>
+                </div>
+            </div>
+            <!--文章E-->
+            
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.querySelector('.theme-icon');
+            const navItems = document.querySelectorAll('.nav-item');
+            const articleCards = document.querySelectorAll('.article-card');
+
+            // 检查用户 preference
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            } else if (savedTheme === 'dark') {
+                document.body.classList.remove('light-mode');
+            } else {
+                // 根据系统偏好设置
+                if (prefersDark) {
+                    document.body.classList.remove('light-mode');
+                } else {
+                    document.body.classList.add('light-mode');
+                }
+            }
+
+            updateThemeIcon();
+
+            // 主题切换功能
+            themeToggle.addEventListener('click', function() {
+                this.style.transform = 'rotate(180deg) scale(0.8)';
+                
+                setTimeout(() => {
+                    document.body.classList.toggle('light-mode');
+                    
+                    // 保存主题设置
+                    if (document.body.classList.contains('light-mode')) {
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        localStorage.setItem('theme', 'dark');
+                    }
+                    
+                    updateThemeIcon();
+                    this.style.transform = 'rotate(0deg) scale(1)';
+                }, 150);
+            });
+
+            function updateThemeIcon() {
+                if (document.body.classList.contains('light-mode')) {
+                    themeIcon.textContent = '🌙';
+                } else {
+                    themeIcon.textContent = '☀️';
+                }
+            }
+
+            // 为导航项添加点击动画
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (item.querySelector('a')) {
+                        e.preventDefault();
+                        this.style.transform = 'translateY(1px)';
+                        setTimeout(() => {
+                            window.location.href = item.querySelector('a').getAttribute('href');
+                        }, 200);
+                    }
+                });
+            });
+
+            // 为文章卡片添加渐入动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            articleCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${index * 0.15}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

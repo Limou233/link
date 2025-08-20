@@ -1,620 +1,364 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lim's Blog</title>
-    <style>
-        :root {
-            --primary-color: #2c2c2c;
-            --secondary-color: #4a4a4a;
-            --accent-color: #888888;
-            --text-color: #e0e0e0;
-            --bg-color: #1a1a1a;
-            --card-bg: #252525;
-            --border-radius: 50px;
-            --card-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --nav-height: 60px;
-            --nav-padding: 2rem;
-        }
-
-        .light-mode {
-            --primary-color: #f0f0f0;
-            --secondary-color: #e0e0e0;
-            --accent-color: #666666;
-            --text-color: #333333;
-            --bg-color: #f8f8f8;
-            --card-bg: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        .navbar {
-            display: flex;
-            align-items: center;
-            padding: 1rem var(--nav-padding);
-            background-color: rgba(40, 40, 40, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 2.5rem;
-            z-index: 100;
-            border-bottom: 1px solid var(--secondary-color);
-            margin: 0 auto;
-            max-width: 800px;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            height: var(--nav-height);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-            margin-bottom: 6.5rem;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .navbar {
-            background-color: rgba(240, 240, 240, 0.8);
-            border-bottom-color: var(--secondary-color);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            width: 100%;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            background-color: rgba(60, 60, 60, 0.6);
-            border-radius: calc(var(--border-radius) / 2);
-            padding: 0.8rem 1.2rem;
-            transition: var(--transition);
-            cursor: pointer;
-            white-space: nowrap;
-            height: calc(var(--nav-height) - 1.6rem);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(5px);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .light-mode .nav-item {
-            background-color: rgba(200, 200, 200, 0.6);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-            background-color: rgba(80, 80, 80, 0.8);
-        }
-
-        .light-mode .nav-item:hover {
-            background-color: rgba(180, 180, 180, 0.8);
-        }
-
-        .nav-item:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            margin-right: 12px;
-            overflow: hidden;
-            flex-shrink: 0;
-            transition: var(--transition);
-            border: 2px solid var(--text-color);
-        }
-
-        .light-mode .logo {
-            border-color: var(--text-color);
-        }
-
-        .logo:hover {
-            transform: scale(1.1);
-        }
-
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .nav-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
-            transition: var(--transition);
-        }
-
-        .nav-title:hover {
-            color: var(--accent-color);
-        }
-
-        .light-mode .nav-title:hover {
-            color: #007acc;
-        }
-
-        .nav-link {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
-
-        .light-mode .nav-link:hover {
-            color: #007acc;
-        }
-
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(60, 60, 60, 0.6);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-left: auto;
-            flex-shrink: 0;
-            position: relative;
-            border: 2px solid var(--text-color);
-        }
-
-        .light-mode .theme-toggle {
-            background-color: rgba(200, 200, 200, 0.6);
-            border-color: var(--text-color);
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(15deg);
-            background-color: rgba(80, 80, 80, 0.8);
-        }
-
-        .light-mode .theme-toggle:hover {
-            background-color: rgba(180, 180, 180, 0.8);
-        }
-
-        .theme-toggle:active {
-            transform: rotate(0deg) scale(0.95);
-        }
-
-        .theme-icon {
-            font-size: 1.4rem;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            transition: all 0.5s ease;
-        }
-
-        #main {
-            display: flex;
-            flex-direction: column;
-            gap: 3.5rem;
-            margin-top: 0;
-        }
-
-        .article-card {
-            position: relative;
-            border-radius: var(--card-radius);
-            overflow: hidden;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--secondary-color);
-            height: 400px;
-            background-color: var(--card-bg);
-        }
-
-        .light-mode .article-card {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border-color: var(--secondary-color);
-        }
-
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .light-mode .article-card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .article-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-            transition: var(--transition);
-        }
-
-        .article-card:hover .article-cover {
-            transform: scale(1.05);
-        }
-
-        .article-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 50%, rgba(26, 26, 26, 0.5) 100%);
-            z-index: 2;
-        }
-
-        .light-mode .article-overlay {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.5) 100%);
-        }
-
-        .article-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 2.5rem;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .article-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1.6rem;
-            color: var(--text-color);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
-        }
-
-        .light-mode .article-title {
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .article-excerpt {
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            margin-bottom: 2.2rem;
-            line-height: 1.8;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-            max-height: 160px; /* 调整此值可控制滚动区域的可视范围 - 值越大，可视内容越多 */
-            overflow-y: auto;
-            flex-shrink: 1;
-        }
-
-        /* 隐藏滚动条但保持可滚动 */
-        .article-excerpt::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .article-excerpt::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .article-excerpt::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-        }
-
-        .light-mode .article-excerpt::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .article-meta {
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-            color: var(--accent-color);
-            gap: 1.4rem;
-            flex-shrink: 0;
-        }
-
-        .light-mode .article-meta {
-            color: #666666;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                top: 2rem;
-                padding: 0.8rem 1.5rem;
-                gap: 1rem;
-                margin-bottom: 5rem;
-            }
-
-            .nav-item {
-                padding: 0.7rem 1.2rem;
-                font-size: 1rem;
-            }
-
-            .logo {
-                width: 36px;
-                height: 36px;
-            }
-
-            .nav-title {
-                font-size: 1.4rem;
-            }
-
-            .nav-link {
-                font-size: 1rem;
-            }
-
-            .theme-toggle {
-                width: 45px;
-                height: 45px;
-            }
-
-            .theme-icon {
-                font-size: 1.3rem;
-            }
-
-            .container {
-                padding: 0 1.5rem;
-            }
-
-            .article-card {
-                height: 350px;
-            }
-
-            .article-content {
-                padding: 2rem;
-            }
-
-            .article-title {
-                font-size: 1.7rem;
-            }
-
-            .article-excerpt {
-                font-size: 1.1rem;
-                max-height: 130px; /* 调整此值可控制滚动区域的可视范围 - 值越大，可视内容越多 */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                top: 1.8rem;
-                padding: 0.7rem 1.2rem;
-                gap: 0.8rem;
-                margin-bottom: 4.5rem;
-            }
-
-            .nav-item {
-                padding: 0.6rem 1rem;
-                font-size: 0.95rem;
-            }
-
-            .logo {
-                width: 32px;
-                height: 32px;
-            }
-
-            .nav-title {
-                font-size: 1.3rem;
-            }
-
-            .nav-link {
-                font-size: 0.95rem;
-            }
-
-            .theme-toggle {
-                width: 40px;
-                height: 40px;
-            }
-
-            .theme-icon {
-                font-size: 1.2rem;
-            }
-
-            .article-card {
-                height: 320px;
-            }
-
-            .article-content {
-                padding: 1.8rem;
-            }
-
-            .article-title {
-                font-size: 1.5rem;
-            }
-
-            .article-excerpt {
-                font-size: 1rem;
-                max-height: 100px; /* 调整此值可控制滚动区域的可视范围 - 值越大，可视内容越多 */
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-item">
-                <div class="logo">
-                    <img src="/img/logo.jpg" alt="Logo" class="logo-img">
+<!DOCTYPE html><html style="--color1:#47a1d1; --color2:#cc8533; --thumbColor:#7a501f;"><head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="panel.css" id="hostStyle">
+<style>		body { 			margin: 0 !important; 			padding: 0 !important; 			cursor: default; 			-webkit-user-select: none; 		} 		
+ 		.aesp-close-button { 			display: inline-block !important; 			width: 10px !important; 			padding-left: 8px !important; 			height: 16px !important; 			line-height: 20px !important; 		} 		
+ 		.aesp-close-button:hover path { 			fill: rgba(255, 255, 255, .8) !important; 		} 		
+ 		.aesp-notification-button { 			height: 19px !important; 			align: top !important; 			border-bottom: 1px solid white !important; 			margin-left: 10px !important; 			padding: 0px !important; 			display: inline-block !important; 		} 		
+ 		.aesp-notification-button:hover { 			border: none !important; 			color: rgba(255, 255, 255, .8) !important; 		} 		
+ 		.aesp-about-icon { 			display: inline-block !important; 			padding-left: 5px !important; 			fill: white !important; 		} 		
+ 		.aesp-about-icon:hover { 			fill: rgba(255, 255, 255, .8) !important; 		} 		
+ 		.aesp-notifications { 			position: relative !important; 			z-index: 1024; !important; 			cursor: default !important; 			-webkit-user-select: none !important; 		} 		
+ 		.aesp-notification { 			overflow: hidden !important; 			height: 0 !important; 			transition: height 0.3s ease-in-out !important; 			position: relative !important; 		} 		
+ 		.aesp-notification.aesp-is-open { 			height: 20px !important; 		} 		
+ 		.aesp-notification__content { 			background-color: rgb(45, 140, 235) !important; 			height: 20px !important; 			color: #ffffff !important; 			font-family: Verdana, sans-serif !important; 			font-size: 12px !important; 			line-height: 20px !important; 			padding: 0 8px !important; 			white-space: nowrap !important; 		} 		
+ 		.aesp-notification__content p { 			margin: 0 !important; 			padding: 0 !important; 		} 		
+ 		.aesp-notification__info { 			position: absolute !important; 			height: 20px !important; 			left: 0 !important; 			width: 100% !important; 			transition: all 0.3s ease-in-out !important; 		} 		
+ 		.aesp-notification__info.aesp-general { 			top: 100% !important; 		} 		
+ 		.aesp-notification__info.aesp-general.aesp-is-active { 			top: 0 !important; 		} 		
+ 		.aesp-notification__info.aesp-reminds { 			bottom: 100% !important; 		} 		
+ 		.aesp-notification__info.aesp-reminds.aesp-is-active { 			bottom: 0 !important; 		} 		
+ 		italic { 			font-style: italic !important; 		}</style><style type="text/css" id="AESPThemeStyle"></style></head>
+
+<body style="font-size: 12.24px;"><div id="aesp-notifications" class="aesp-notifications aesp-is-open"></div>
+  <div id="main">
+
+    <div class="main">
+      
+      <svg id="collapse" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"></path></svg>
+      <div class="container1" id="container1">
+  
+        <div class="cont12" id="hide">
+  
+          <div id="modeSwitch">
+            <img src="final graph/customGraph.png" alt="" srcset="" class="" id="customMode">
+            <img src="final graph/mathGraphs.png" alt="" srcset="" id="mathMode" class="sel">
+            <svg height="800" id="refresh" viewBox="0 0 528.919 528.918" width="800" xmlns="http://www.w3.org/2000/svg" class=""><path d="m70.846 324.059c3.21 3.926 8.409 3.926 11.619 0l69.162-84.621c3.21-3.926 1.698-7.108-3.372-7.108h-36.723c-5.07 0-8.516-4.061-7.427-9.012 18.883-85.995 95.625-150.564 187.207-150.564 105.708 0 191.706 85.999 191.706 191.706 0 105.709-85.998 191.707-191.706 191.707-12.674 0-22.95 10.275-22.95 22.949s10.276 22.949 22.95 22.949c131.018 0 237.606-106.588 237.606-237.605s-106.589-237.605-237.606-237.605c-116.961 0-214.395 84.967-233.961 196.409-.878 4.994-5.52 9.067-10.59 9.067h-41.704c-5.071 0-6.579 3.182-3.373 7.108z"></path></svg>
+
+          </div>
+          <div id="customGraph" style="display: none;">
+            <canvas id="canvas" height="138" width="138" class="bezier" style="cursor: default;"></canvas>
+          </div>
+          <div id="graphControls" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" id="vert" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-160 80-360l200-200 56 57-103 103h287v80H233l103 103-56 57Zm400-240-56-57 103-103H440v-80h287L624-743l56-57 200 200-200 200Z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" id="horiz" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-160 80-360l200-200 56 57-103 103h287v80H233l103 103-56 57Zm400-240-56-57 103-103H440v-80h287L624-743l56-57 200 200-200 200Z"></path></svg>
+          </div>
+
+          <div id="mathGraph" style="display: flex;">
+          <div class="cont121">
+            <div id="rangeSlider">
+                <input type="range" min="0" max="100" value="50" id="easePers">
+                <div id="sliderValues">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" id="graphLink1" viewBox="0 -960 960 960" width="24" style="visibility: visible;"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" id="midl" height="20" viewBox="0 -960 960 960" width="20"><path d="M129.37-789.13q-17.453 0-29.477-11.964Q87.87-813.057 87.87-830.42t12.024-29.537q12.024-12.174 29.477-12.174h701.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H129.37ZM468-170.87q-17.452 0-29.476-12.024Q426.5-194.918 426.5-212.37V-684q0-17.452 12.024-29.476Q450.548-725.5 468-725.5h24q17.452 0 29.476 12.024Q533.5-701.452 533.5-684v471.63q0 17.452-12.024 29.476Q509.452-170.87 492-170.87h-24Z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" id="graphLink2" viewBox="0 -960 960 960" width="24" style="visibility: visible;"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"></path></svg>
                 </div>
-                <a href="/index.html" class="nav-title">Lim</a>
             </div>
-            <div class="nav-item">
-                <a href="/about.html" class="nav-link">关于</a>
+
+            <div class="image-container" id="imgCont">
+              <canvas id="easeImg" width="304" height="304" class="image1" style="display: block; box-sizing: border-box; height: 304px; width: 304px; clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0px 100%);"></canvas>
+              <canvas id="easeImg2" width="304" height="304" class="image2" style="display: block; box-sizing: border-box; height: 304px; width: 304px; clip-path: polygon(50% 0px, 100% 0px, 100% 100%, 50% 100%);"></canvas>
+              <canvas width="400" height="400" id="bg" class="bg"></canvas>
+
+              <div id="customCont1">
+                <div id="customValuesText1" style="font-size: 9.18px;"></div>
+                <input type="number" id="customInput1" class="mouse-control" style="visibility: hidden; font-size: 9.18px; width: 19.89px;">
+              </div>
+              <div id="customCont2">
+              <div id="customValuesText2" style="font-size: 9.18px;"></div>
+              <input type="number" id="customInput2" class="mouse-control" style="visibility: hidden; font-size: 9.18px; width: 19.89px;">
             </div>
-            <div class="theme-toggle" id="themeToggle">
-                <span class="theme-icon">🌙</span>
+          </div>
+
+          </div>
+          <div class="cont122">
+            <div class="cont112">
+              <div class="slider">
+                <form class="item">
+                  <input id="where2" onchange="" type="range" value="1" min="0" max="2" step="1" list="my-detents">
+
+                  <datalist id="my-detents" class="options">
+                    <option value="0" label="in" style="font-size: 9.18px;">
+                    </option><option class="inOut" value="2" label="out" style="font-size: 9.18px;">
+
+                  </option></datalist>
+                </form>
+              </div>
+
+              <div class="easing" id="eas1">
+                <img src="final graph/arrow.png" id="offBtn1" class="offBtn1" draggable="false">
+                <select id="ease2" "="" style="font-size: 9.18px;">
+                  <option value="Sine" style="font-size: 9.18px;">Sine</option>
+                  <option value="Quad" style="font-size: 9.18px;">Quad</option>
+                  <option value="Cubic" style="font-size: 9.18px;">Cubic</option>
+                  <option value="Quart" style="font-size: 9.18px;">Quart</option>
+                  <option value="Quint" style="font-size: 9.18px;">Quint</option>
+                  <option value="Expo" style="font-size: 9.18px;">Expo</option>
+                  <option value="Circ" style="font-size: 9.18px;">Circ</option>
+                  <option value="Back" style="font-size: 9.18px;">Back</option>
+                  <option value="Elastic" style="font-size: 9.18px;">Elastic</option>
+                  <option value="Bounce" style="font-size: 9.18px;">Bounce</option>
+                </select>
+                <img src="final graph/arrowR.png" id="offBtn2" class="offBtn2" draggable="false">
+              </div>
+
             </div>
+
+            <div class="linkCont">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" id="link" viewBox="0 -960 960 960" width="24"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"></path></svg>
+            </div>
+            <div class="cont111">
+
+              <div class="slider">
+                <form class="item">
+                  <input id="where" type="range" value="1" min="0" max="2" step="1" list="my-detents">
+
+                  <datalist id="my-detents" class="options">
+                    <option value="0" label="in" style="font-size: 9.18px;">
+                    </option><option value="1" class="inOut" style="font-size: 9.18px;">
+                    </option><option value="2" class="inOut" label="out" style="font-size: 9.18px;">
+
+                  </option></datalist>
+                </form>
+              </div>
+
+              <div class="easing" id="eas2" draggable="false">
+                <img src="final graph/arrow.png" id="offBtn3" class="offBtn1">
+
+                <select id="ease" class="leSelect" style="font-size: 9.18px;">
+                  <option value="Sine" style="font-size: 9.18px;">Sine</option>
+                  <option value="Quad" style="font-size: 9.18px;">Quad</option>
+                  <option value="Cubic" style="font-size: 9.18px;">Cubic</option>
+                  <option value="Quart" style="font-size: 9.18px;">Quart</option>
+                  <option value="Quint" style="font-size: 9.18px;">Quint</option>
+                  <option value="Expo" style="font-size: 9.18px;">Expo</option>
+                  <option value="Circ" style="font-size: 9.18px;">Circ</option>
+                  <option value="Back" style="font-size: 9.18px;">Back</option>
+                  <option value="Elastic" style="font-size: 9.18px;">Elastic</option>
+                  <option value="Bounce" style="font-size: 9.18px;">Bounce</option>
+                </select>
+                <img src="final graph/arrowR.png" draggable="false" id="offBtn4" class="offBtn2">
+              </div>
+
+            </div>
+
+
+          </div>
         </div>
-    </nav>
-
-    <div class="container">
-        <div id="main">
-            <!-- 文章示例，可直接复制粘贴整个div来添加新文章 -->
-            <div class="article-card">
-                <img src="/img/blog/1.jpg" alt="文章封面" class="article-cover">
-                <div class="article-overlay"></div>
-                <div class="article-content">
-                    <h2 class="article-title">我的第一篇博客</h2>
-                    <p class="article-excerpt">这是一个关于技术分享和个人思考的博客。在这里，我将记录我的学习历程和生活感悟。通过持续的写作，我希望能够整理自己的思路，与更多人分享有价值的内容。这是一个关于技术分享和个人思考的博客。在这里，我将记录我的学习历程和生活感悟。通过持续的写作，我希望能够整理自己的思路，与更多人分享有价值的内容。这是一个关于技术分享和个人思考的博客。在这里，我将记录我的学习历程和生活感悟。通过持续的写作，我希望能够整理自己的思路，与更多人分享有价值的内容。这是一个关于技术分享和个人思考的博客。在这里，我将记录我的学习历程和生活感悟。通过持续的写作，我希望能够整理自己的思路，与更多人分享有价值的内容。</p>
-                    <div class="article-meta">
-                        <span class="article-date">📅 2024-01-01</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 可复制粘贴的模板 -->
-            <div class="article-card">
-                <img src="/img/blog/2.jpg" alt="文章封面" class="article-cover">
-                <div class="article-overlay"></div>
-                <div class="article-content">
-                    <h2 class="article-title">前端开发的新趋势</h2>
-                    <p class="article-excerpt">探索现代前端开发的最新技术和框架，了解如何构建高性能的Web应用。从响应式设计到渐进式Web应用，前端技术正在不断演进。探索现代前端开发的最新技术和框架，了解如何构建高性能的Web应用。从响应式设计到渐进式Web应用，前端技术正在不断演进。探索现代前端开发的最新技术和框架，了解如何构建高性能的Web应用。从响应式设计到渐进式Web应用，前端技术正在不断演进。探索现代前端开发的最新技术和框架，了解如何构建高性能的Web应用。从响应式设计到渐进式Web应用，前端技术正在不断演进。探索现代前端开发的最新技术和框架，了解如何构建高性能的Web应用。从响应式设计到渐进式Web应用，前端技术正在不断演进。</p>
-                    <div class="article-meta">
-                        <span class="article-date">📅 2024-01-05</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="article-card">
-                <img src="/img/blog/3.jpg" alt="文章封面" class="article-cover">
-                <div class="article-overlay"></div>
-                <div class="article-content">
-                    <h2 class="article-title">设计思维的重要性</h2>
-                    <p class="article-excerpt">设计不仅仅是外观，更是一种解决问题的思维方式。了解如何将设计思维应用到日常工作中，创造真正有价值的产品。设计不仅仅是外观，更是一种解决问题的思维方式。了解如何将设计思维应用到日常工作中，创造真正有价值的产品。设计不仅仅是外观，更是一种解决问题的思维方式。了解如何将设计思维应用到日常工作中，创造真正有价值的产品。设计不仅仅是外观，更是一种解决问题的思维方式。了解如何将设计思维应用到日常工作中，创造真正有价值的产品。设计不仅仅是外观，更是一种解决问题的思维方式。了解如何将设计思维应用到日常工作中，创造真正有价值的产品。</p>
-                    <div class="article-meta">
-                        <span class="article-date">📅 2024-01-10</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="article-card">
-                <img src="/img/blog/4.jpg" alt="文章封面" class="article-cover">
-                <div class="article-overlay"></div>
-                <div class="article-content">
-                    <h2 class="article-title">高效学习的方法</h2>
-                    <p class="article-excerpt">分享一些经过验证的学习技巧和方法，帮助你更高效地掌握新知识和技能。从费曼技巧到间隔重复，科学学习事半功倍。分享一些经过验证的学习技巧和方法，帮助你更高效地掌握新知识和技能。从费曼技巧到间隔重复，科学学习事半功倍。分享一些经过验证的学习技巧和方法，帮助你更高效地掌握新知识和技能。从费曼技巧到间隔重复，科学学习事半功倍。分享一些经过验证的学习技巧和方法，帮助你更高效地掌握新知识和技能。从费曼技巧到间隔重复，科学学习事半功倍。分享一些经过验证的学习技巧和方法，帮助你更高效地掌握新知识和技能。从费曼技巧到间隔重复，科学学习事半功倍。</p>
-                    <div class="article-meta">
-                        <span class="article-date">📅 2024-01-15</span>
-                    </div>
-                </div>
-            </div>
         </div>
+        <div class="cont13">
+          <div class="presets" id="presetCont" style="grid-template-columns: repeat(auto-fill, 3%); gap: 0.375%; border-radius: 1.96667% / 4.33333%;"><div class="savedEasing" style="width: 15%; margin: 2%;">
+							<canvas class="presetImgs1" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<canvas class="presetImgs2" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(100% 0px, 100% 0px, 100% 100%, 100% 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<input type="text" name="" class="presetName" onblur="changeName(this)" style="font-size: 1.03275px;">
+							</div><div class="savedEasing" style="width: 15%; margin: 2%;">
+							<canvas class="presetImgs1" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<canvas class="presetImgs2" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(100% 0px, 100% 0px, 100% 100%, 100% 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<input type="text" name="" class="presetName" onblur="changeName(this)" style="font-size: 1.03275px;">
+							</div><div class="savedEasing" style="width: 15%; margin: 2%;">
+							<canvas class="presetImgs1" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<canvas class="presetImgs2" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(100% 0px, 100% 0px, 100% 100%, 100% 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<input type="text" name="" class="presetName" onblur="changeName(this)" style="font-size: 1.03275px;">
+							</div><div class="savedEasing" style="width: 15%; margin: 2%;">
+							<canvas class="presetImgs1" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<canvas class="presetImgs2" width="1" height="1" style="height: 1px; aspect-ratio: 1 / 1; clip-path: polygon(100% 0px, 100% 0px, 100% 100%, 100% 100%); display: block; box-sizing: border-box; width: 1px;"></canvas>
+							<input type="text" name="" class="presetName" onblur="changeName(this)" style="font-size: 1.03275px;">
+							</div></div>
+          <div class="editButtons">
+            <div>
+              <img src="final graph/add.png" alt="" srcset="" id="addFavorite">
+              <img src="final graph/edit.png" alt="" id="editPresets" srcset="">
+              <svg xmlns="http://www.w3.org/2000/svg" id="swapPresets" height="24" viewBox="0 -960 960 960" width="24"><path d="m274-200 34 34q12 12 11.5 28T308-110q-12 12-28.5 12.5T251-109L148-212q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-103q12-12 28.5-11.5T308-370q11 12 11.5 28T308-314l-34 34h406v-120q0-17 11.5-28.5T720-440q17 0 28.5 11.5T760-400v120q0 33-23.5 56.5T680-200H274Zm412-480H280v120q0 17-11.5 28.5T240-520q-17 0-28.5-11.5T200-560v-120q0-33 23.5-56.5T280-760h406l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T709-851l103 103q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L709-589q-12 12-28.5 11.5T652-590q-11-12-11.5-28t11.5-28l34-34Z"></path></svg>
+            </div>
+            <div id="zoomCont">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" id="zoomIn" viewBox="0 -960 960 960" width="24"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Zm-40-60v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" id="zoomOut" viewBox="0 -960 960 960" width="24"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400ZM280-540v-80h200v80H280Z"></path></svg>
+            </div>
+
+          </div>
+        </div>
+        <div class="cont14">
+          <div id="intCont" title="interval between newly created keyframes (ms)">
+            <img src="final graph/interval.png" style="width: 25%;" id="intDiv" class="nonInt" draggable="false">
+            <div style="margin-right:5%;">:</div>
+            <input type="number" class="mouse-control no0" id="interval" placeholder="frms" value="1" style="font-size: 9.18px; width: 19.89px;">
+          </div>
+          <div id="whereDiv" class="whereDiv">
+            <img src="final graph/between.png" title="Between" id="Between" draggable="false" class="sel">
+            <img src="final graph/All.png" title="All" id="Both" draggable="false" class="">
+            <img src="final graph/path.png" title="Path" id="All" draggable="false">
+            </div>
+  
+          <div id="copyCont">
+            <svg xmlns="http://www.w3.org/2000/svg" id="copy" title="copy easing" height="20" viewBox="0 -960 960 960" width="20"><path d="M368.37-237.37q-34.483 0-58.742-24.258-24.258-24.259-24.258-58.742v-474.26q0-34.483 24.258-58.742 24.259-24.259 58.742-24.259h378.26q34.483 0 58.742 24.259t24.259 58.742v474.26q0 34.483-24.259 58.742-24.259 24.258-58.742 24.258H368.37Zm-155 155q-34.483 0-58.742-24.258-24.259-24.259-24.259-58.742v-515.76q0-17.453 11.964-29.477 11.963-12.023 29.326-12.023t29.537 12.023q12.174 12.024 12.174 29.477v515.76h419.76q17.453 0 29.477 11.964 12.023 11.963 12.023 29.326t-12.023 29.537Q650.583-82.37 633.13-82.37H213.37Z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" id="paste" title="paste easing" height="20" viewBox="0 -960 960 960" width="20"><path d="M726.478-244.587H573.087q-16.824 0-28.206-11.485-11.381-11.485-11.381-28.13 0-16.646 11.546-28.222Q556.591-324 573.326-324h153.152l-29.369-29.609q-12.196-12.195-12.196-28.177t12.248-27.896q12.143-12.144 27.839-12.144 15.696 0 27.891 12.196l96.53 96.29q12.536 12.623 12.536 29.152 0 16.53-12.674 28.84l-96.29 96.291q-11.819 11.818-27.675 11.596-15.855-.223-27.448-12.495-12.196-11.957-11.957-28.131.239-16.174 11.919-27.854l28.646-28.646ZM218.87-135.869q-34.238 0-58.619-24.382-24.382-24.381-24.382-58.619v-522.26q0-34.238 24.382-58.619 24.381-24.382 58.619-24.382h161.912q9.435-31.717 36.436-52.456 27-20.739 62.782-20.739 35.196 0 62.37 20.739t36.848 52.456H741.13q34.238 0 58.619 24.358 24.382 24.358 24.382 58.562v166.406q0 17.435-11.964 29.609-11.963 12.174-29.326 12.174t-29.42-12.024q-12.058-12.024-12.058-29.476V-741.13h-70.559v82.326q0 17.452-12.024 29.476-12.024 12.024-29.476 12.024H330.696q-17.452 0-29.476-12.024-12.024-12.024-12.024-29.476v-82.326H218.87v522.26H396q17.452 0 29.476 11.964Q437.5-194.943 437.5-177.58t-12.024 29.537Q413.452-135.869 396-135.869H218.87Zm260.919-608.848q15.211 0 25.711-10.29 10.5-10.289 10.5-25.5 0-15.21-10.289-25.71-10.29-10.5-25.5-10.5-15.211 0-25.711 10.289-10.5 10.29-10.5 25.5 0 15.211 10.289 25.711 10.29 10.5 25.5 10.5Z"></path></svg>
+          </div>
+          <div id="mainActionsCont">
+
+            <svg xmlns="http://www.w3.org/2000/svg" id="removeBtn" title="remove easing" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-200q-33 0-56.5-23.5T120-280v-360q-17 0-28.5-11.5T80-680q0-17 11.5-28.5T120-720h120v-20q0-17 11.5-28.5T280-780h80q17 0 28.5 11.5T400-740v20h120q17 0 28.5 11.5T560-680q0 17-11.5 28.5T520-640v360q0 33-23.5 56.5T440-200H200Zm440-40q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320h80q17 0 28.5 11.5T760-280q0 17-11.5 28.5T720-240h-80Zm0-160q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480h160q17 0 28.5 11.5T840-440q0 17-11.5 28.5T800-400H640Zm0-160q-17 0-28.5-11.5T600-600q0-17 11.5-28.5T640-640h200q17 0 28.5 11.5T880-600q0 17-11.5 28.5T840-560H640Zm-440-80v360h240v-360H200Z"></path></svg>
+            
+            <svg viewBox="0 0 24 24" id="easeBtn" fill="none" title="apply easing" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.096"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12H5M8 12H5M5 12V9M5 12V15" stroke-width="2.04" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6.25 6L6.49485 5.72018C7.29167 4.80952 8.70833 4.80952 9.50515 5.72017L13.8476 10.683C14.5074 11.437 14.5074 12.563 13.8476 13.317L9.50515 18.2798C8.70833 19.1905 7.29167 19.1905 6.49485 18.2798L6.25 18" stroke-width="2.04" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M13 19L17.8844 13.3016C18.5263 12.5526 18.5263 11.4474 17.8844 10.6984L13 5" stroke-width="2.04" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17 19L21.8844 13.3016C22.5263 12.5526 22.5263 11.4474 21.8844 10.6984L17 5" stroke-width="2.04" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="container2" id="container2">
+        <div class="cont21">
+          <ul id="clipDataContainer">
+
+          </ul>
+
+
+        </div>
+        <div class="cont22">
+          <button id="cancel" style="font-size: 7.65px;">cancel</button>
+          <button id="confirm" disabled="" style="font-size: 7.65px;">confirm</button>
+        </div>
+      </div>
+      <div id="container3">
+
+        <div id="mainParamDiv">
+          <div class="paramCont" id="paramCont">
+            <div class="firstRow" id="firstRow">
+              <div class="bounceQ">
+                <div>
+                  BQ:
+                </div>
+                <input type="number" class="mouse-control noPeriod no0" value="3" id="BQ" style="font-size: 9.18px; width: 19.89px;">
+
+              </div>
+              <div class="flyTime">
+                <div>
+                  Fly:
+                </div>
+                <input type="number" class="mouse-control" value="30" id="fly" style="font-size: 9.18px; width: 19.89px;">
+                <div>
+                  %
+                </div>
+              </div>
+              <div class="firstB">
+                <div>
+                  FB:
+                </div>
+                <input type="number" class="mouse-control no0" value="75" id="FB" style="font-size: 9.18px; width: 19.89px;">
+                <div>
+                  %
+                </div>
+
+              </div>
+              <div class="lastB">
+                <div>
+                  LB:
+                </div>
+                <input type="number" class="mouse-control no0 " value="10" id="LB" style="font-size: 9.18px; width: 19.89px;">
+                <div>
+                  %
+                </div>
+
+              </div>
+            </div>
+            <div id="customB">
+              <div id="peaks">
+
+              </div>
+          <button id="confPeaks" style="font-size: 7.65px;">ok</button>  
+          </div>
+
+          </div>
+          <div class="paramCont" id="elasticCont">
+            <div class="firstRow" id="firstRow">
+              <div class="bounceQ">
+                <div>
+                  sup:
+                </div>
+                <input type="number" class="mouse-control no0" placeholder="2" value="2" id="sup" style="font-size: 9.18px; width: 19.89px;">
+
+              </div>
+              <div class="flyTime">
+                <div>
+                  freq:
+                </div>
+                <input type="number" class="mouse-control" placeholder="4" value="4" id="p2" style="font-size: 9.18px; width: 19.89px;">
+                
+              </div>
+              <div class="firstB">
+                <div>
+                  length:
+                </div>
+                <input type="number" class="mouse-control" placeholder="10" value="10" id="p3" style="font-size: 9.18px; width: 19.89px;">
+            
+
+              </div>
+              <div class="lastB">
+                <div>
+                  phase:
+                </div>
+                <input type="number" class="mouse-control " placeholder="5" value="5" id="p4" style="font-size: 9.18px; width: 19.89px;">
+
+              </div>
+            </div>
+            <svg height="800" id="elasticReset" viewBox="0 0 528.919 528.918" width="800" xmlns="http://www.w3.org/2000/svg"><path d="m70.846 324.059c3.21 3.926 8.409 3.926 11.619 0l69.162-84.621c3.21-3.926 1.698-7.108-3.372-7.108h-36.723c-5.07 0-8.516-4.061-7.427-9.012 18.883-85.995 95.625-150.564 187.207-150.564 105.708 0 191.706 85.999 191.706 191.706 0 105.709-85.998 191.707-191.706 191.707-12.674 0-22.95 10.275-22.95 22.949s10.276 22.949 22.95 22.949c131.018 0 237.606-106.588 237.606-237.605s-106.589-237.605-237.606-237.605c-116.961 0-214.395 84.967-233.961 196.409-.878 4.994-5.52 9.067-10.59 9.067h-41.704c-5.071 0-6.579 3.182-3.373 7.108z"></path></svg>
+
+          </div>
+          <div class="graphCont">
+            <div id="functionName">
+              easeOutBounce
+            </div>
+    
+            <div class="decay">
+              <div id="decayText">
+                <img src="final graph/settings.png" alt="" srcset="" id="peakSettings">
+                <div id="mf">
+                  decay
+                </div>
+              </div>
+              <div id="decaySlider">
+                
+                <form action="">
+                  <input type="range" min="0" max="8" value="3" step="1" id="decay">
+                  <datalist class="options">
+                    <option value="0" label="early" style="font-size: 9.18px;">
+                    </option><option value="4" label="linear" style="font-size: 9.18px;">
+                    </option><option value="8" label="late" style="font-size: 9.18px;">
+                  </option></datalist>
+
+                </form>
+              </div>
+              <div id="valueSliderDiv">
+                <form action="">
+                  <input type="range" min="0" max="10" value="3" step="0.1" id="valueSlider">
+                  <datalist class="options">
+                    <option value="0" label="0" style="font-size: 9.18px;">
+                    </option><option value="5" label="5" style="font-size: 9.18px;">
+                    </option><option value="10" label="10" style="font-size: 9.18px;">
+                  </option></datalist>
+                </form>
+                <input type="number" class="mouse-control" name="" value="3" id="valueVisual" style="font-size: 9.18px; width: 19.89px;">
+              </div>
+            </div>
+            <div id="myChartCont">
+              <canvas width="400" height="400" id="myChart"></canvas>
+            </div>
+
+          </div>
+        </div>
+        <button id="confirmC" style="font-size: 7.65px;">confirm</button>
+
+      </div>
+
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = document.querySelector('.theme-icon');
-            const navItems = document.querySelectorAll('.nav-item');
-            const articleCards = document.querySelectorAll('.article-card');
 
-            // 检查用户 preference
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const savedTheme = localStorage.getItem('theme');
-            
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-            } else if (savedTheme === 'dark') {
-                document.body.classList.remove('light-mode');
-            } else {
-                // 根据系统偏好设置
-                if (prefersDark) {
-                    document.body.classList.remove('light-mode');
-                } else {
-                    document.body.classList.add('light-mode');
-                }
-            }
 
-            updateThemeIcon();
+  </div>
 
-            // 主题切换功能
-            themeToggle.addEventListener('click', function() {
-                this.style.transform = 'rotate(180deg) scale(0.8)';
-                
-                setTimeout(() => {
-                    document.body.classList.toggle('light-mode');
-                    
-                    // 保存主题设置
-                    if (document.body.classList.contains('light-mode')) {
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        localStorage.setItem('theme', 'dark');
-                    }
-                    
-                    updateThemeIcon();
-                    this.style.transform = 'rotate(0deg) scale(1)';
-                }, 150);
-            });
 
-            function updateThemeIcon() {
-                if (document.body.classList.contains('light-mode')) {
-                    themeIcon.textContent = '🌙';
-                } else {
-                    themeIcon.textContent = '☀️';
-                }
-            }
 
-            // 为导航项添加点击动画
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    if (item.querySelector('a')) {
-                        e.preventDefault();
-                        this.style.transform = 'translateY(1px)';
-                        setTimeout(() => {
-                            window.location.href = item.querySelector('a').getAttribute('href');
-                        }, 200);
-                    }
-                });
-            });
 
-            // 为文章卡片添加渐入动画
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
 
-            articleCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = `all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${index * 0.15}s`;
-                observer.observe(card);
-            });
-        });
-    </script>
-</body>
-</html>
+<!-- DO NOT REMOVE -->
+<script src="../node_modules/chart.js/dist/chart.umd.js"></script>
+<script src="js/panel.js"></script>
+
+</body></html>
